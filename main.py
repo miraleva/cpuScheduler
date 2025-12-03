@@ -2,6 +2,7 @@ import sys
 from scheduler.utils.parser import parse_input
 from scheduler.algorithms.fcfs import FCFS
 from scheduler.algorithms.sjf import SJF
+from scheduler.algorithms.priority import PriorityScheduler
 
 if len(sys.argv) < 3:
     print("Usage: python main.py <input_file> <algorithm> [time_quantum_for_RR]")
@@ -19,6 +20,8 @@ if algorithm == "fcfs":
     scheduler = FCFS()
 elif algorithm == "sjf":
     scheduler = SJF()
+elif algorithm == "priority":
+    scheduler = PriorityScheduler()
 else:
     print(f"Unknown algorithm: {algorithm}")
     sys.exit(1)
