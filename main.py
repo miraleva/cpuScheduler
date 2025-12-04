@@ -14,10 +14,10 @@ algorithm = sys.argv[2].lower()
 time_quantum = int(sys.argv[3]) if len(sys.argv) > 3 else None
 context_switch = int(sys.argv[4]) if len(sys.argv) > 4 else 0
 
-# Input dosyasını oku
+# Read the input file
 processes = parse_input(input_file)
 
-# Scheduler seçimi
+# Pick the right scheduler based on user input
 if algorithm == "fcfs":
     scheduler = FCFS()
 elif algorithm == "sjf":
@@ -26,26 +26,26 @@ elif algorithm == "priority":
     scheduler = PriorityScheduler()
 elif algorithm == "rr":
     if time_quantum is None:
-        print("Error: Time quantum is required for Round Robin.")
+        print("Error: Time quantum is required for Round Robin")
         sys.exit(1)
     scheduler = RoundRobin(time_quantum, context_switch)
 else:
     print(f"Unknown algorithm: {algorithm}")
     sys.exit(1)
 
-# Çalıştır
+# Run the scheduler
 if algorithm == "rr":
     finished_processes, gantt_chart = scheduler.schedule(processes)
-    # Print Gantt Chart for RR
+    # Print the Gantt Chart for RR
     print("--- Gantt Chart ---")
     gantt_str = ""
     for start, pid, end in gantt_chart:
         gantt_str += f"[{start}]-{pid}-[{end}]-"
-    print(gantt_str[:-1]) # Remove trailing dash
+    print(gantt_str[:-1]) # Remove the last dash
 else:
     finished_processes = scheduler.schedule(processes)
 
-# Sonuçları yazdır
+# Print the table of results
 print(f"--- {algorithm.upper()} Results ---")
 print("PID | Arrival | Burst | Start | Finish | Waiting | Turnaround")
 total_waiting = 0
@@ -65,21 +65,17 @@ for p in finished_processes:
     if p.arrival_time < min_arrival_time:
         min_arrival_time = p.arrival_time
 
+# Calculate averages
 n = len(finished_processes)
 if n > 0:
     avg_waiting = total_waiting / n
     avg_turnaround = total_turnaround / n
-    # CPU Utilization = Total Burst Time / Total Simulation Time (Finish - Start)
-    # Assuming start is min_arrival_time or 0? Usually 0 if simulation starts at 0.
-    # But strictly it's (Last Finish - First Arrival) or (Last Finish - 0).
-    # Let's use (max_finish_time - min_arrival_time) as the active span.
-    # Or simply max_finish_time if we assume 0 start.
-    # Let's use max_finish_time for simplicity as per common OS assignments.
-    total_time = max_finish_time # - min_arrival_time
+    
+    # CPU Utilization = Total time spent working / Total time passed
+    total_time = max_finish_time
     cpu_utilization = (total_burst / total_time) * 100 if total_time > 0 else 0
 
     print("-" * 60)
     print(f"Average Waiting Time: {avg_waiting:.2f}")
     print(f"Average Turnaround Time: {avg_turnaround:.2f}")
     print(f"CPU Utilization: {cpu_utilization:.2f}%")
-

@@ -4,26 +4,26 @@ from typing import Optional
 @dataclass
 class Process:
     """
-    Represents a process in the CPU scheduling simulator.
+    Holds all the details for a single process
     
     Attributes:
-        process_id (int): Unique identifier for the process.
-        arrival_time (int): Time at which the process arrives in the ready queue.
-        burst_time (int): Total CPU time required by the process.
-        priority (int): Priority of the process (lower value might imply higher priority, depending on algorithm).
-        remaining_time (int): Remaining CPU time needed to complete execution.
-        start_time (Optional[int]): Time when the process first gets the CPU. None if not yet started.
-        finish_time (Optional[int]): Time when the process completes execution. None if not yet finished.
-        waiting_time (int): Total time spent in the ready queue.
-        turnaround_time (int): Total time from arrival to completion.
+        process_id (int): The ID of the process
+        arrival_time (int): When the process arrives
+        burst_time (int): How long the process needs to run
+        priority (int): The priority value (lower might mean more important)
+        remaining_time (int): How much time is left to finish
+        start_time (Optional[int]): When the process started running
+        finish_time (Optional[int]): When the process finished running
+        waiting_time (int): How long the process waited in the queue
+        turnaround_time (int): Total time from arrival to finish
     """
-    # Input fields
+    # Input fields from the file
     process_id: int
     arrival_time: int
     burst_time: int
     priority: int
 
-    # Simulation fields
+    # Fields we calculate during simulation
     remaining_time: int = 0
     start_time: Optional[int] = None
     finish_time: Optional[int] = None
@@ -31,5 +31,5 @@ class Process:
     turnaround_time: int = 0
 
     def __post_init__(self):
-        """Initialize remaining_time to burst_time upon creation."""
+        """Set the initial remaining time to the full burst time"""
         self.remaining_time = self.burst_time

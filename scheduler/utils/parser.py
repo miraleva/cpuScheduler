@@ -3,34 +3,36 @@ from scheduler.process import Process
 
 def parse_input(file_path: str) -> List[Process]:
     """
-    Reads an input file and parses process information.
-
-    The expected file format is CSV-like or space-separated:
+    Reads the process data from the text file
+    
+    The file should look like this:
     Process_ID, Arrival_Time, Burst_Time, Priority
 
     Args:
-        file_path (str): The path to the input file.
+        file_path (str): Where the file is located
 
     Returns:
-        List[Process]: A list of Process objects parsed from the file.
+        List[Process]: A list of Process objects we created
     """
     processes: List[Process] = []
     
     with open(file_path, 'r') as f:
         for line in f:
             line = line.strip()
+            # Skip empty lines
             if not line:
                 continue
             
-            # Split by comma (assuming CSV format based on requirements)
+            # Split the line by commas
             parts = line.split(',')
             
-            # Basic parsing without validation as requested
+            # Convert strings to integers
             pid = int(parts[0].strip())
             arrival = int(parts[1].strip())
             burst = int(parts[2].strip())
             priority = int(parts[3].strip())
             
+            # Create a new Process object and add it to our list
             processes.append(Process(
                 process_id=pid,
                 arrival_time=arrival,

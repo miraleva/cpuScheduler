@@ -4,19 +4,19 @@ from scheduler.process import Process
 
 class Scheduler(ABC):
     """
-    Abstract base class for all CPU scheduling algorithms.
+    This is the parent class for all our schedulers
+    It makes sure every algorithm has a schedule method
     """
 
     @abstractmethod
     def schedule(self, processes: List[Process]) -> List[Process]:
         """
-        Schedules the given list of processes according to the specific algorithm.
+        Runs the scheduling algorithm on the list of processes
 
         Args:
-            processes (List[Process]): A list of Process objects to be scheduled.
+            processes (List[Process]): The processes we need to schedule
 
         Returns:
-            List[Process]: The list of processes with updated simulation metrics 
-                           (start_time, finish_time, waiting_time, turnaround_time).
+            List[Process]: The processes with their time metrics updated
         """
         pass
